@@ -1,0 +1,25 @@
+{
+  "name": "hapi-sample-app",
+  "version": "1.0.0",
+  "description": "Sample application to check hapi framework",
+  "main": "index.js",
+  "dependencies": {
+    "good": "^7.2.0",
+    "good-console": "^6.4.0",
+    "hapi": "^16.4.3"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "scripts": {
+    "start": "nodemon -w ./ index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "hapi",
+    "web",
+    "example"
+  ],
+  "author": "Vivek Poddar",
+  "license": "ISC"
+}

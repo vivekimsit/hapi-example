@@ -1,6 +1,6 @@
 'use strict';
 const Hapi = require('hapi');
-const Boom = require('boom');
+const Joi = require('joi');
 const server = new Hapi.Server();
 
 server.connection({
@@ -8,31 +8,30 @@ server.connection({
   port: 8000
 });
 
-server.register(require('vision'), () => {
-
-  server.views({
-    engines: {
-      hbs: require('handlebars')
+server.route({
+  method: ['POST','PUT'],
+  path: '/user/{id?}',
+  config: {
+    validate: {
+      params: Joi.object().keys({
+        id: Joi.number()
+      }),
+      payload: Joi.object().keys({
+        id: Joi.number(),
+        email: Joi.string()
+      }).unknown(),
+      query: Joi.object().keys({
+        id: Joi.number()
+      })
     },
-    relativeTo: __dirname,
-    path: 'views'
-  });
-
-  server.ext('onPreResponse', (request, reply) => {
-    const resp = request.response;
-    if (!resp.isBoom) return reply.continue; // continue normal flow
-
-    reply.view('error', resp.output.payload)
-      .code(resp.output.statusCode);
-  });
-
-  server.route({
-    method: 'GET',
-    path: '/{name?}',
-    handler: (request, reply) => {
-      reply(Boom.badRequest());
+    handler: function(request, reply) {
+      reply({
+        params: request.params,
+        query: request.query,
+        payload: request.payload
+      })
     }
-  });
-
-  server.start(() => console.log(`Started at: ${server.info.uri}`));
+  }
 });
+
+server.start(() => console.log(`Started at: ${server.info.uri}`));

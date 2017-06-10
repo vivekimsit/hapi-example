@@ -1,5 +1,6 @@
 'use strict';
 const Hapi = require('hapi');
+const Boom = require('boom');
 
 const server = new Hapi.Server();
 server.connection({
@@ -24,11 +25,7 @@ server.register({
     method: 'GET',
     path: '/',
     handler: (response, reply) => {
-      // reply('Hello, Hapi'); content-type: text/html
-      // reply({hello: 'world'}); content-type: application/json
-      // reply(Promise.resolve('Hello, world')); Promise is supported too
-      // reply(new Error('Oops')); 500 Internal Server Error
-      reply(require('fs').createReadStream(__filename));
+      reply(Boom.notFound());
     }
   });
 

@@ -17,23 +17,22 @@ const goodOptions = {
   }
 };
 
-server.register({
-  register: require('good'),
-  options: goodOptions,
-}, err => {
-  server.route({
-    method: 'GET',
-    path: '/',
-    handler: (response, reply) => {
-      reply(Boom.notFound());
-    }
+server.register(require('vision'), () => {
+
+  server.views({
+    engines: {
+      hbs: require('handlebars')
+    },
+    relativeTo: __dirname,
+    layout: true,
+    path: 'views'
   });
 
   server.route({
     method: 'GET',
-    path: '/{name}',
-    handler: (response, reply) => {
-      reply(`Hello, ${request.params.name}`);
+    path: '/{name?}',
+    handler: (request, reply) => {
+      reply.view('home', { name: request.params.name || 'World' })
     }
   });
 

@@ -13,8 +13,8 @@ server.route({
   path: '/',
   config: {
     handler: function(request, reply) {
-      console.log('info', 'Setting cookie');
-      reply('Cookies!')
+      const hello = request.state.hello;
+      reply(`Cookies! ${hello}`)
         .state('hello', 'world', {isSecure: false}); // isSecure=false so that its visible in devtools
     }
   }

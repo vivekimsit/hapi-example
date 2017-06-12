@@ -9,27 +9,13 @@ server.connection({
 });
 
 server.route({
-  method: ['POST','PUT'],
-  path: '/user/{id?}',
+  method: 'GET',
+  path: '/',
   config: {
-    validate: {
-      params: Joi.object().keys({
-        id: Joi.number()
-      }),
-      payload: Joi.object().keys({
-        id: Joi.number(),
-        email: Joi.string()
-      }).unknown(),
-      query: Joi.object().keys({
-        id: Joi.number()
-      })
-    },
     handler: function(request, reply) {
-      reply({
-        params: request.params,
-        query: request.query,
-        payload: request.payload
-      })
+      console.log('info', 'Setting cookie');
+      reply('Cookies!')
+        .state('hello', 'world', {isSecure: false}); // isSecure=false so that its visible in devtools
     }
   }
 });
